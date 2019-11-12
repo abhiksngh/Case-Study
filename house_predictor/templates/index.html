@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>House Price Predictor</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body style="background: #000;">
+  <div class="login">
+   <h1>House Price Forecasting</h1>
+ 
+    <form action="{{ url_for('predict')}}"method="post">
+      <input type="text" name="Rooms" placeholder="Rooms" required="required" />
+      <input type="text" name="Landsize" placeholder="Landsize" required="required" />
+      <input type="text" name="BuildingArea" placeholder="BuildingArea" required="required" />
+      <button type="submit" class="btn btn-primary btn-block btn-large">Predict House Price</button>
+    </form>  
+    <br>
+    {{ prediction_text }}
+ 
+  </div>
+</body>
+</html>
