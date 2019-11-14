@@ -1,6 +1,8 @@
 import numpy as np
 from flask import Flask, request, jsonify, render_template
 import pickle
+import logging
+import pandas as pd
 
 app = Flask(__name__)
 model = pickle.load(open('model.pkl', 'rb'))
@@ -12,13 +14,19 @@ def home():
 @app.route('/predict',methods=['POST'])
 def predict():
 
-    int_features = [int(x) for x in request.form.values()]
-    final_features = [np.array(int_features)]
-    prediction = model.predict(final_features)
+    
+    rooms=request.form['Rooms']
+    landsize=request.form['Landsize']
+    buildingArea=request.form['BuildingArea']
 
-    output = round(prediction[0], 2)
+    input_features = pd.DataFrame([[rooms, landsize, buildingArea]],
+                                       columns=['rooms', 'landsize', 'buildingArea'],
+                                       dtype=float)
+    prediction = model.predict(input_features)[0]
 
-    return render_template('index.html', prediction_text='Sales should be $ {}'.format(output))
+    output = round(prediction, 2)
+
+    return render_template('index.html', prediction_text='$ {}'.format(output),original_input={'Rooms':rooms, 'Landsize':landsize, 'BuildingArea':buildingArea})
 
 @app.route('/results',methods=['POST'])
 def results():
